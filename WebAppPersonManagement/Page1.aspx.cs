@@ -11,21 +11,8 @@ using Telerik.Web.UI;
 
 namespace WebAppPersonManagement
 {
-    public partial class Page1 : System.Web.UI.Page
+    public partial class Page1 : Page
     {
-        //private NorthwindReadWriteEntities _dataContext;
-
-        //protected NorthwindReadWriteEntities DbContext
-        //{
-        //    get
-        //    {
-        //        if (_dataContext == null)
-        //        {
-        //            _dataContext = new NorthwindReadWriteEntities();
-        //        }
-        //        return _dataContext;
-        //    }
-        //}
 
         private APIConnector _api;
 
@@ -46,32 +33,19 @@ namespace WebAppPersonManagement
 
         protected void RadGrid1_UpdateCommand(object source, GridCommandEventArgs e)
         {
-            //var editableItem = ((GridEditableItem)e.Item);
-            //var productId = (int)editableItem.GetDataKeyValue("ProductID");
 
-            ////retrive entity form the Db
-            //var product = DbContext.Products.Where(n => n.ProductID == productId).FirstOrDefault();
-            //if (product != null)
-            //{
-            //    //update entity's state
-            //    editableItem.UpdateValues(product);
 
-            //    try
-            //    {
-            //        //save chanages to Db
-            //        DbContext.SaveChanges();
-            //    }
-            //    catch (System.Exception)
-            //    {
-            //        ShowErrorMessage();
-            //    }
-            //}
-            var editableItem = ((GridEditableItem)e.Item);
+            var editableItem = (GridEditableItem)e.Item;
             var id = (int)editableItem.GetDataKeyValue("ID");
+
+            Person p = new Person();
+            editableItem.UpdateValues(p);
+            AsyncContext.Run(() => _api.UpdatePersonAsync(id, p));
+
 
         }
 
-        
+
         private void ShowErrorMessage()
         {
             RadAjaxManager1.ResponseScripts.Add(string.Format("window.radalert(\"Please enter valid data!\")"));
@@ -115,24 +89,13 @@ namespace WebAppPersonManagement
         protected void RadGrid1_InsertCommand(object source, GridCommandEventArgs e)
         {
 
-            //DbContext.AddToProducts(product);
-            //try
-            //{
-            //    //save chanages to Db
-            //    DbContext.SaveChanges();
-            //}
-            //catch (System.Exception)
-            //{
-            //    ShowErrorMessage();
-            //}
-
             var editableItem = ((GridEditableItem)e.Item);
             Hashtable values = new Hashtable();
             editableItem.ExtractValues(values);
 
+            Person p = new Person();
             try
             {
-                Person p = new Person();
                 p.Name = (string)values["Name"];
                 p.Age = values["Age"] == null ? 0 : int.Parse(values["Age"].ToString());
                 p.PersonTypeID = values["PersonTypeID"] == null ? 0 : int.Parse(values["PersonTypeID"].ToString());
@@ -141,18 +104,28 @@ namespace WebAppPersonManagement
             {
                 ShowErrorMessage();
             }
-            AsyncContext.Run(() => _api.CreatePerson(p));
+            AsyncContext.Run(() => _api.CreatePersonAsync(p));
 
 
         }
 
         protected void RadGrid1_DeleteCommand(object source, GridCommandEventArgs e)
         {
-            
+
             var id = (int)((GridDataItem)e.Item).GetDataKeyValue("ID");
 
             AsyncContext.Run(() => _api.DeletePersonAsync(id));
 
+        }
+
+        protected void RadGrid1_ItemDataBound(object sender, GridItemEventArgs e)
+        {
+            if (e.Item is GridDataItem)
+            {
+                GridDataItem dataItem = e.Item as GridDataItem;
+                int type = int.Parse(dataItem["PersonTypeID"].Text);
+                dataItem["GoToPage2"].Visible = type == 1;
+            }
         }
     }
 }

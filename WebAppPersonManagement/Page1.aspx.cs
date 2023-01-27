@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -121,7 +122,16 @@ namespace WebAppPersonManagement
 
         protected void RadGrid1_ItemDataBound(object sender, GridItemEventArgs e)
         {
-            
+            //if (e.Item is GridDataItem)
+            //{
+            //    GridDataItem item = (GridDataItem)e.Item;
+            //    int type = int.Parse(item["PersonTypeID"].Text);
+            //    if (type == 1) { }
+            //    else
+            //    {
+            //        item["GoToPage2"].Controls.Clear();
+            //    }
+            //}
         }
 
         protected void RadGrid1_PreRender(object sender, EventArgs e)
@@ -129,10 +139,7 @@ namespace WebAppPersonManagement
             foreach (GridDataItem dataItem in RadGrid1.Items)
             {
                 int type = int.Parse(dataItem["PersonTypeID"].Text);
-                if (type == 1)
-                {
-
-                }
+                if (type == 1) { }
                 else
                 {
                     dataItem["GoToPage2"].Controls.Clear();
@@ -142,6 +149,25 @@ namespace WebAppPersonManagement
 
         protected void RadGrid1_ItemCommand(object sender, GridCommandEventArgs e)
         {
+            switch (e.CommandName.ToUpper())
+            {
+                case "GOTOPAGE2":
+                    if(e.Item is GridDataItem)
+                    {
+                        GridDataItem item = (GridDataItem)e.Item;
+                        string id = item["ID"].Text;
+
+                        OpenPage2PopUp(id);
+                    }
+                    break;
+            }
+        }
+
+        private void OpenPage2PopUp(string id)
+        {
+            string url = $"Page2.aspx?id={id}";
+            string fullURL = $"window.open('{url}', '_blank', 'height=700,width=800,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=no,titlebar=no' );";
+            ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
 
         }
     }

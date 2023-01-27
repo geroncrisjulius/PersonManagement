@@ -43,57 +43,8 @@ namespace WebAppPersonManagement
             }
         }
 
-        //private Highcharts CreateHighChart(List<DataPoint> points)
-        //{
-        //    Highcharts hc = new Highcharts("bar");
-
-        //    hc.InitChart(new Chart
-        //    {
-        //        Type = DotNet.Highcharts.Enums.ChartTypes.Column
-        //    });
-        //    hc.SetTitle(new Title { Text = "Sample Highchart" });
-        //    hc.SetXAxis(new XAxis
-        //    {
-        //        Type = DotNet.Highcharts.Enums.AxisTypes.Category,
-        //        Title = new XAxisTitle() { Text = "Dates" },
-        //        Categories = points.Select(p => p.Date).ToArray()
-        //    }) ;
-        //    hc.SetYAxis(new YAxis
-        //    {
-        //        Title = new YAxisTitle() { Text = "Random" },
-        //        ShowFirstLabel = false,
-        //        ShowLastLabel = false,
-        //        Min = 0,
-        //        Max = 110
-        //    });
-        //    hc.SetSeries(new Series
-        //    {
-        //        Data = new Data(points.Select(p => (object)p.Random).ToArray())
-        //    });
-
-        //    return hc ;
-        //}
-
-        //private List<DataPoint> CreateData()
-        //{
-        //    DateTime date = DateTime.Now;
-        //    List<DataPoint> ls = new List<DataPoint>();
-        //    Random r = new Random();
-
-
-        //    for (int i = 0; i < 10; i++)
-        //    {
-        //        DataPoint dp = new DataPoint
-        //        {
-        //            Date = date.AddDays(i).ToShortDateString(),
-        //            Random = r.Next(0, 100)
-        //        };
-        //        ls.Add(dp);
-        //    }
-
-        //    return ls;
-
-        //}
+        //TODO change link button to image button
+        //TODO add link from page1 to page2 new window
 
     }
 

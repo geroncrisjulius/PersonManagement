@@ -19,7 +19,7 @@
 <body>
     <form id="form1" runat="server">
         <telerik:RadScriptManager runat="server" ID="RadScriptManager1" />
-        <telerik:RadSkinManager ID="RadSkinManager1" runat="server" ShowChooser="true" Skin="Glow"/>
+        <telerik:RadSkinManager ID="RadSkinManager1" runat="server" ShowChooser="false" Skin="Glow" />
         <telerik:RadAjaxManager runat="server" ID="RadAjaxManager1" DefaultLoadingPanelID="RadAjaxLoadingPanel1">
             <AjaxSettings>
                 <telerik:AjaxSetting AjaxControlID="RadGrid1">
@@ -46,17 +46,18 @@
                             ForceExtractValue="Always" ConvertEmptyStringToNull="true" />
                         <telerik:GridBoundColumn DataField="Name" HeaderText="Name" />
                         <telerik:GridBoundColumn DataField="Age" HeaderText="Age" />
-                        <telerik:GridBoundColumn DataField="PersonTypeID" HeaderText="Type" />
-                        <telerik:GridBoundColumn DataField="PersonTypeDescription" HeaderText="Type" ReadOnly="true" Visible="false"/>
-                        <telerik:GridButtonColumn ButtonType="FontIconButton" CommandName="Edit" />
+                        <telerik:GridBoundColumn DataField="PersonTypeID" HeaderText="Type" Display="false"/>
+                        <telerik:GridBoundColumn DataField="PersonTypeDescription" HeaderText="Type" ReadOnly="true"  />
+                        <telerik:GridButtonColumn ButtonType="FontIconButton" CommandName="Edit" ItemStyle-Width="10px" />
                         <telerik:GridButtonColumn ConfirmText="Delete this product?" ConfirmDialogType="RadWindow"
-                        ConfirmTitle="Delete" ButtonType="FontIconButton" CommandName="Delete" />
-                        <telerik:GridButtonColumn ButtonType="PushButton" Text="Open" UniqueName="GoToPage2" CommandName="Open"/> 
+                            ConfirmTitle="Delete" ButtonType="FontIconButton" CommandName="Delete" ItemStyle-Width="10px" />
+                        <telerik:GridButtonColumn ButtonType="ImageButton" Text="Open" UniqueName="GoToPage2" CommandName="GoToPage2" ImageUrl="Images/right_arrow.png" ItemStyle-Width="10px" />
+
                     </Columns>
                 </MasterTableView>
                 <PagerStyle Mode="NextPrevAndNumeric" />
                 <ClientSettings>
-                    <ClientEvents OnRowDblClick="rowDblClick"/>
+                    <ClientEvents OnRowDblClick="rowDblClick" />
                 </ClientSettings>
             </telerik:RadGrid>
         </div>

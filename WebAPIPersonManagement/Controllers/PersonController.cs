@@ -34,6 +34,8 @@ namespace WebAPIPersonManagement.Controllers
         [HttpPost]
         public IActionResult CreatePerson(Person person)
         {
+
+            //TODO add error on missing persontype
             _context.Persons.Add(person);
             _context.SaveChanges();
             return CreatedAtAction(nameof(CreatePerson), new { id = person.ID }, person);
@@ -52,6 +54,8 @@ namespace WebAPIPersonManagement.Controllers
             {
                 return NotFound();
             }
+
+            //TODO add error on missing person type
 
             tmpPerson.Name = person.Name;
             tmpPerson.Age = person.Age;

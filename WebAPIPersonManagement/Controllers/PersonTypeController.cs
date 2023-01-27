@@ -19,7 +19,7 @@ namespace WebAPIPersonManagement.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<PersonType>> GetAllPersonTypes()
         {
-            IEnumerable<PersonType> personTypes = _context.PersonTypes;
+            IEnumerable<PersonType> personTypes = _context.PersonTypes.OrderBy(pt => pt.Type);
             personTypes = personTypes == null ? new List<PersonType>() : personTypes ;
             return Ok(personTypes);
         }

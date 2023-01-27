@@ -18,7 +18,7 @@ namespace WebAPIPersonManagement.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Person>> GetAllPersons()
         {
-            IEnumerable<Person> persons = _context.Persons;
+            IEnumerable<Person> persons = _context.Persons.OrderBy(p => p.ID);
             persons = persons == null ? new List<Person>() : persons;
             return Ok(persons);
         }
@@ -35,7 +35,11 @@ namespace WebAPIPersonManagement.Controllers
         public IActionResult CreatePerson(Person person)
         {
 
-            //TODO add error on missing persontype
+            if (!_context.PersonTypes.Any(pt => pt.Type == person.PersonTypeID))
+            {
+                return BadRequest();
+            }
+
             _context.Persons.Add(person);
             _context.SaveChanges();
             return CreatedAtAction(nameof(CreatePerson), new { id = person.ID }, person);
@@ -44,7 +48,7 @@ namespace WebAPIPersonManagement.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdatePerson(int id, Person person)
         {
-            if(id != person.ID)
+            if (id != person.ID)
             {
                 return BadRequest();
             }
@@ -55,7 +59,10 @@ namespace WebAPIPersonManagement.Controllers
                 return NotFound();
             }
 
-            //TODO add error on missing person type
+            if (!_context.PersonTypes.Any(pt => pt.Type == person.PersonTypeID))
+            {
+                return BadRequest();
+            }
 
             tmpPerson.Name = person.Name;
             tmpPerson.Age = person.Age;
@@ -81,7 +88,7 @@ namespace WebAPIPersonManagement.Controllers
             return NoContent();
         }
 
-        
+
 
 
 

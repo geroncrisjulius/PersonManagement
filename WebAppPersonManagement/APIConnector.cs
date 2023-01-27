@@ -42,7 +42,7 @@ namespace WebAppPersonManagement
 
         }
 
-        public async void CreatePerson(Person person)
+        public async void CreatePersonAsync(Person person)
         {
             string requestURL = $"{_baseURL}Person";
 
@@ -53,7 +53,7 @@ namespace WebAppPersonManagement
             }
         }
 
-        public async void UpdatePerson(int id, Person person)
+        public async void UpdatePersonAsync(int id, Person person)
         {
 
             string requestURL = $"{_baseURL}Person/{id}";
@@ -63,7 +63,7 @@ namespace WebAppPersonManagement
             }
         }
 
-        public async void DeletePerson(int id)
+        public async void DeletePersonAsync(int id)
         {
 
             string requestURL = $"{_baseURL}Person/{id}";
@@ -73,6 +73,17 @@ namespace WebAppPersonManagement
             }
         }
 
+        public async Task<IEnumerable<PersonType>> GetAllPersonTypesAsync()
+        {
+            string requestURL = $"{_baseURL}PersonType";
+            using(HttpResponseMessage response = await _httpClient.GetAsync(requestURL))
+            {
+                response.EnsureSuccessStatusCode();
+                string json = await response.Content.ReadAsStringAsync();
+                var personType = JsonConvert.DeserializeObject<IEnumerable<PersonType>>(json);
+                return personType != null ? personType : new List<PersonType>();
+            }
+        }
 
     }
 }

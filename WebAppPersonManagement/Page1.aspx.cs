@@ -151,7 +151,7 @@ namespace WebAppPersonManagement
             
             var id = (int)((GridDataItem)e.Item).GetDataKeyValue("ID");
 
-            AsyncContext.Run(() => _api.DeletePerson(id));
+            AsyncContext.Run(() => _api.DeletePersonAsync(id));
 
         }
     }

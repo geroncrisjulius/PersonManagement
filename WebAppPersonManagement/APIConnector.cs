@@ -29,6 +29,19 @@ namespace WebAppPersonManagement
             return data;
         }
 
+        public async Task<Person> GetPersonAsync(int id)
+        {
+            string requestURL = $"{_baseURL}Person/{id}";
+            using (HttpResponseMessage response = await _httpClient.GetAsync(requestURL))
+            {
+                response.EnsureSuccessStatusCode();
+                string json = await response.Content.ReadAsStringAsync();
+                var person = JsonConvert.DeserializeObject<Person>(json);
+                return person != null ? person : new Person();
+            }
+
+        }
+
         public async Task<IEnumerable<Person>> GetAllPersonsAsync()
         {
             string requestURL = $"{_baseURL}Person";

@@ -17,7 +17,7 @@
 <body>
     <form id="form1" runat="server">
         <telerik:RadScriptManager runat="server" ID="RadScriptManager1" />
-        <telerik:RadSkinManager ID="RadSkinManager1" runat="server" ShowChooser="false" Skin="Glow"/>
+        <telerik:RadSkinManager ID="RadSkinManager1" runat="server" ShowChooser="true" Skin="Glow"/>
         <telerik:RadAjaxManager runat="server" ID="RadAjaxManager1" DefaultLoadingPanelID="RadAjaxLoadingPanel1">
             <AjaxSettings>
                 <telerik:AjaxSetting AjaxControlID="RadGrid1">
@@ -35,7 +35,8 @@
             <telerik:RadGrid RenderMode="Lightweight" runat="server" ID="RadGrid1" AutoGenerateColumns="false" AllowPaging="true" AllowSorting="true"
                 OnNeedDataSource="RadGrid1_NeedDataSource" OnUpdateCommand="RadGrid1_UpdateCommand"
                 OnItemCreated="RadGrid1_ItemCreated" OnDeleteCommand="RadGrid1_DeleteCommand"
-                OnInsertCommand="RadGrid1_InsertCommand" OnItemDataBound="RadGrid1_ItemDataBound">
+                OnInsertCommand="RadGrid1_InsertCommand" OnItemDataBound="RadGrid1_ItemDataBound"
+                OnPreRender="RadGrid1_PreRender" OnItemCommand="RadGrid1_ItemCommand">
                 <SortingSettings ShowNoSortIcons="true" />
                 <MasterTableView DataKeyNames="ID" CommandItemDisplay="Top" InsertItemPageIndexAction="ShowItemOnCurrentPage">
                     <Columns>
@@ -47,12 +48,12 @@
                         <telerik:GridButtonColumn ButtonType="FontIconButton" CommandName="Edit" />
                         <telerik:GridButtonColumn ConfirmText="Delete this product?" ConfirmDialogType="RadWindow"
                         ConfirmTitle="Delete" ButtonType="FontIconButton" CommandName="Delete" />
-                        <telerik:GridButtonColumn ButtonType="FontIconButton" CommandName="GoToPage2"/> 
+                        <telerik:GridButtonColumn ButtonType="PushButton" Text="Open" UniqueName="GoToPage2" CommandName="Open"/> 
                     </Columns>
                 </MasterTableView>
                 <PagerStyle Mode="NextPrevAndNumeric" />
                 <ClientSettings>
-                    <ClientEvents OnRowDblClick="rowDblClick" />
+                    <ClientEvents OnRowDblClick="rowDblClick"/>
                 </ClientSettings>
             </telerik:RadGrid>
         </div>

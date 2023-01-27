@@ -120,12 +120,41 @@ namespace WebAppPersonManagement
 
         protected void RadGrid1_ItemDataBound(object sender, GridItemEventArgs e)
         {
-            if (e.Item is GridDataItem)
+            //if (e.Item is GridDataItem)
+            //{
+            //    GridDataItem dataItem = e.Item as GridDataItem;
+            //    int type = int.Parse(dataItem["PersonTypeID"].Text);
+            //    if (type == 1)
+            //    {
+
+            //    }
+            //    else
+            //    {
+            //        dataItem["GoToPage2"].Controls.Clear();
+            //    }
+
+            //}
+        }
+
+        protected void RadGrid1_PreRender(object sender, EventArgs e)
+        {
+            foreach (GridDataItem dataItem in RadGrid1.Items)
             {
-                GridDataItem dataItem = e.Item as GridDataItem;
                 int type = int.Parse(dataItem["PersonTypeID"].Text);
-                dataItem["GoToPage2"].Visible = type == 1;
+                if (type == 1)
+                {
+
+                }
+                else
+                {
+                    dataItem["GoToPage2"].Controls.Clear();
+                }
             }
+        }
+
+        protected void RadGrid1_ItemCommand(object sender, GridCommandEventArgs e)
+        {
+
         }
     }
 }

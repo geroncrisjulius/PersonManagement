@@ -171,7 +171,5 @@ namespace WebAppPersonManagement
 
         }
 
-        //TODO fix design
-        //TODO asign default page
     }
 }

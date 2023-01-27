@@ -1,8 +1,4 @@
-﻿using DotNet.Highcharts;
-using DotNet.Highcharts.Helpers;
-using DotNet.Highcharts.Options;
-using DotNet.Highcharts.Attributes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -37,9 +33,12 @@ namespace WebAppPersonManagement
             {
 
                 var p = AsyncContext.Run(() => _api.GetPersonAsync(id));
+                
                 name = p.Name;
                 age = p.Age.ToString();
-                persontype = p.PersonTypeID.ToString();
+                persontype = p.PersonTypeDescription;
+                
+
 
             }
         }

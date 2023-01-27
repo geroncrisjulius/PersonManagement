@@ -12,10 +12,8 @@
         <%: Scripts.Render("~/bundles/modernizr") %>
         <%: Scripts.Render("~/bundles/jquery")  %>
         <%: Scripts.Render("~/bundles/bootstrap") %>
-        <%--<script src="Scripts/Highcharts-4.0.1/js/highcharts.js"></script>--%>
-<%--        <script src="~/Scripts/Highcharts-4.0.1/js/highcharts.js"></script>--%>
-        <script src="https://code.highcharts.com/highcharts.js"></script>
     </asp:PlaceHolder>
+    <script src="Scripts/Highcharts-10.3.3/code/highcharts.js"></script>
     <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
@@ -53,7 +51,7 @@
             </div>
             <div class="card-body">
                 <%--<%:chart %>--%>
-                <div id="container" style="width:100%; height:400px;"></div>
+                <div id="container" style="width: 100%; height: 400px;"></div>
             </div>
 
         </div>
@@ -62,7 +60,31 @@
     </form>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', GenerateChart);
+
+        function padTo2Digits(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        function formatDate(date) {
+            return [
+                padTo2Digits(date.getMonth() + 1),
+                padTo2Digits(date.getDate()),
+                date.getFullYear(),
+            ].join('/');
+        }
+
+        function GenerateChart() {
+            var rndInt = [];
+            var dates = [];
+            var dt = new Date();
+            for (var i = 0; i < 10; i++) {
+                rndInt[i] = Math.floor(Math.random() * 100);
+                dt.setDate(dt.getDate() + 1);
+                var str = formatDate(dt);
+                dates[i] = str;
+            }
+
             const chart = Highcharts.chart('container', {
                 chart: {
                     type: 'column'
@@ -71,7 +93,7 @@
                     text: 'Sample HighChart'
                 },
                 xAxis: {
-                    categories: ['Apples', 'Bananas', 'Oranges']
+                    categories: dates
                 },
                 yAxis: {
                     title: {
@@ -81,10 +103,10 @@
                     max: 110
                 },
                 series: [{
-                    data: [1, 0, 4]
+                    data: rndInt
                 }]
             });
-        });
+        }
     </script>
 </body>
 </html>

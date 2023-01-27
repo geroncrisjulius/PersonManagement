@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebAPIPersonManagement.Models;
 
 namespace WebAPIPersonManagement.Database
 {

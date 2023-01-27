@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Runtime.InteropServices;
 using WebAPIPersonManagement.Database;
-using WebAPIPersonManagement.Models;
 
 namespace WebAPIPersonManagement.Controllers
 {

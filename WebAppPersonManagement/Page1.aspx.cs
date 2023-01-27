@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
 using Telerik.Web.UI;
 
 namespace WebAppPersonManagement
@@ -38,7 +39,7 @@ namespace WebAppPersonManagement
             var editableItem = (GridEditableItem)e.Item;
             var id = (int)editableItem.GetDataKeyValue("ID");
 
-            Person p = new Person();
+            Person_WriteModel p = new Person_WriteModel();
             editableItem.UpdateValues(p);
             AsyncContext.Run(() => _api.UpdatePersonAsync(id, p));
 
@@ -93,7 +94,7 @@ namespace WebAppPersonManagement
             Hashtable values = new Hashtable();
             editableItem.ExtractValues(values);
 
-            Person p = new Person();
+            Person_WriteModel p = new Person_WriteModel();
             try
             {
                 p.Name = (string)values["Name"];
@@ -120,20 +121,7 @@ namespace WebAppPersonManagement
 
         protected void RadGrid1_ItemDataBound(object sender, GridItemEventArgs e)
         {
-            //if (e.Item is GridDataItem)
-            //{
-            //    GridDataItem dataItem = e.Item as GridDataItem;
-            //    int type = int.Parse(dataItem["PersonTypeID"].Text);
-            //    if (type == 1)
-            //    {
-
-            //    }
-            //    else
-            //    {
-            //        dataItem["GoToPage2"].Controls.Clear();
-            //    }
-
-            //}
+            
         }
 
         protected void RadGrid1_PreRender(object sender, EventArgs e)

@@ -29,33 +29,33 @@ namespace WebAppPersonManagement
             return data;
         }
 
-        public async Task<Person> GetPersonAsync(int id)
+        public async Task<Person_GetModel> GetPersonAsync(int id)
         {
             string requestURL = $"{_baseURL}Person/{id}";
             using (HttpResponseMessage response = await _httpClient.GetAsync(requestURL))
             {
                 response.EnsureSuccessStatusCode();
                 string json = await response.Content.ReadAsStringAsync();
-                var person = JsonConvert.DeserializeObject<Person>(json);
-                return person != null ? person : new Person();
+                var person = JsonConvert.DeserializeObject<Person_GetModel>(json);
+                return person != null ? person : new Person_GetModel();
             }
 
         }
 
-        public async Task<IEnumerable<Person>> GetAllPersonsAsync()
+        public async Task<IEnumerable<Person_GetModel>> GetAllPersonsAsync()
         {
             string requestURL = $"{_baseURL}Person";
             using (HttpResponseMessage response = await _httpClient.GetAsync(requestURL))
             {
                 response.EnsureSuccessStatusCode();
                 string json = await response.Content.ReadAsStringAsync();
-                var persons = JsonConvert.DeserializeObject<IEnumerable<Person>>(json);
-                return persons != null ? persons : new List<Person>();
+                var persons = JsonConvert.DeserializeObject<IEnumerable<Person_GetModel>>(json);
+                return persons != null ? persons : new List<Person_GetModel>();
             }
 
         }
 
-        public async void CreatePersonAsync(Person person)
+        public async void CreatePersonAsync(Person_WriteModel person)
         {
             string requestURL = $"{_baseURL}Person";
 
@@ -66,7 +66,7 @@ namespace WebAppPersonManagement
             }
         }
 
-        public async void UpdatePersonAsync(int id, Person person)
+        public async void UpdatePersonAsync(int id, Person_WriteModel person)
         {
 
             string requestURL = $"{_baseURL}Person/{id}";
@@ -95,6 +95,18 @@ namespace WebAppPersonManagement
                 string json = await response.Content.ReadAsStringAsync();
                 var personType = JsonConvert.DeserializeObject<IEnumerable<PersonType>>(json);
                 return personType != null ? personType : new List<PersonType>();
+            }
+        }
+
+        public async Task<PersonType> GetAllPersonTypesAsync(int id)
+        {
+            string requestURL = $"{_baseURL}PersonType/{id}";
+            using (HttpResponseMessage response = await _httpClient.GetAsync(requestURL))
+            {
+                response.EnsureSuccessStatusCode();
+                string json = await response.Content.ReadAsStringAsync();
+                var personType = JsonConvert.DeserializeObject<PersonType>(json);
+                return personType != null ? personType : new PersonType();
             }
         }
 

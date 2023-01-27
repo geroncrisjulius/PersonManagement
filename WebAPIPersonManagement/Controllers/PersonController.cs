@@ -16,23 +16,65 @@ namespace WebAPIPersonManagement.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Person>> GetAllPersons()
+        public ActionResult<IEnumerable<Person_GetModel>> GetAllPersons()
         {
-            IEnumerable<Person> persons = _context.Persons.OrderBy(p => p.ID);
-            persons = persons == null ? new List<Person>() : persons;
-            return Ok(persons);
+            IEnumerable<Person> persons = _context.Persons
+                .Include(p => p.PersonType)
+                .OrderBy(p => p.ID);
+
+            var pList = new List<Person_GetModel>();
+            foreach (Person p in persons)
+            {
+
+                pList.Add(CreatePersonGetModel(p));
+            }
+
+
+            return Ok(pList);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Person> GetPerson(int id)
+        public ActionResult<Person_GetModel> GetPerson(int id)
         {
             var person = _context.Persons
+                .Include(p => p.PersonType)
                 .FirstOrDefault(p => p.ID == id);
-            return person == null ? NotFound() : Ok(person);
+
+            if (person == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(CreatePersonGetModel(person));
+        }
+
+        private Person_GetModel CreatePersonGetModel(Person person)
+        {
+            Person_GetModel pModel = new Person_GetModel
+            {
+                ID = person.ID,
+                Name = person.Name,
+                Age = person.Age,
+                PersonTypeID = person.PersonTypeID,
+                PersonTypeDescription = person.PersonType == null ? "" : person.PersonType.Description
+            };
+            return pModel;
+        }
+
+        private Person CreatePersonFromModel(Person_WriteModel personModel)
+        {
+            Person p = new Person
+            {
+                ID = personModel.ID,
+                Name = personModel.Name,
+                Age = personModel.Age,
+                PersonTypeID = personModel.PersonTypeID
+            };
+            return p;
         }
 
         [HttpPost]
-        public IActionResult CreatePerson(Person person)
+        public IActionResult CreatePerson(Person_WriteModel person)
         {
 
             if (!_context.PersonTypes.Any(pt => pt.Type == person.PersonTypeID))
@@ -40,13 +82,14 @@ namespace WebAPIPersonManagement.Controllers
                 return BadRequest();
             }
 
-            _context.Persons.Add(person);
+            Person p = CreatePersonFromModel(person);
+            _context.Persons.Add(p);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(CreatePerson), new { id = person.ID }, person);
+            return CreatedAtAction(nameof(CreatePerson), new { id = p.ID }, p);
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdatePerson(int id, Person person)
+        public IActionResult UpdatePerson(int id, Person_WriteModel person)
         {
             if (id != person.ID)
             {

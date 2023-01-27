@@ -47,6 +47,7 @@
                         <telerik:GridBoundColumn DataField="Name" HeaderText="Name" />
                         <telerik:GridBoundColumn DataField="Age" HeaderText="Age" />
                         <telerik:GridBoundColumn DataField="PersonTypeID" HeaderText="Type" />
+                        <telerik:GridBoundColumn DataField="PersonTypeDescription" HeaderText="Type" ReadOnly="true" Visible="false"/>
                         <telerik:GridButtonColumn ButtonType="FontIconButton" CommandName="Edit" />
                         <telerik:GridButtonColumn ConfirmText="Delete this product?" ConfirmDialogType="RadWindow"
                         ConfirmTitle="Delete" ButtonType="FontIconButton" CommandName="Delete" />

@@ -14,11 +14,12 @@
         <%: Scripts.Render("~/bundles/bootstrap") %>
     </asp:PlaceHolder>
     <script src="Scripts/Highcharts-10.3.3/code/highcharts.js"></script>
+
     <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
 </head>
-<body>
+<body style="padding-top: 0px;">
     <form id="form1" runat="server">
         <asp:ScriptManager runat="server">
             <Scripts>
@@ -36,17 +37,21 @@
                 <asp:ScriptReference Name="WebFormsBundle" />
             </Scripts>
         </asp:ScriptManager>
-
-        <div class="card m-4">
-            <div class="d-flex d-inline card-title">
+        <nav class="navbar navbar-light bg-dark">
+            <div class="container-fluid">
+                <span class="navbar-brand mb-0 text-light h1">Person Management</span>
+            </div>
+        </nav>
+        <div class="card m-4 text-white bg-dark">
+            <div class="d-flex d-inline card-header bg-secondary">
                 <div class="col-4">
-                    <h2 class="text-left p-2 "><%:name %></h2>
+                    <h2 class="text-left"><%:name %></h2>
                 </div>
                 <div class="col-4">
-                    <h2 class="text-center p-2"><%:age %></h2>
+                    <h2 class="text-center"><%:age %></h2>
                 </div>
-                <div class="col-4">
-                    <h2 class="text-end p-2"><%:persontype %></h2>
+                <div class="col-4 ">
+                    <h2 class="text-end "><%:persontype %></h2>
                 </div>
             </div>
             <div class="card-body">
@@ -86,23 +91,46 @@
 
             const chart = Highcharts.chart('container', {
                 chart: {
-                    type: 'column'
+                    type: 'column',
+                    backgroundColor: '#4F4F4F'
                 },
                 title: {
-                    text: 'Sample HighChart'
+                    text: 'Sample HighChart',
+                    style: {
+                        color: '#DEDEDE',
+                        fontWeight: 'bold'
+                    }
                 },
                 xAxis: {
-                    categories: dates
+                    categories: dates,
+                    labels: {
+                        style: {
+                            color: '#FFFFFF'
+                        }
+                    }
                 },
                 yAxis: {
                     title: {
-                        text: 'Random'
+                        text: 'Value',
+                        style: {
+                            color: '#FFFFFF'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            color: '#FFFFFF'
+                        }
                     },
                     min: 0,
                     max: 110
                 },
+                legend: {
+                    enabled: false
+                },
                 series: [{
-                    data: rndInt
+                    name: 'Random',
+                    data: rndInt,
+                    color: '#44B300'
                 }]
             });
         }

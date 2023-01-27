@@ -42,9 +42,7 @@ namespace WebAppPersonManagement
 
             }
         }
-
-        //TODO change link button to image button
-        //TODO add link from page1 to page2 new window
+        
 
     }
 

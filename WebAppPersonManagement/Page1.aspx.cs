@@ -170,5 +170,8 @@ namespace WebAppPersonManagement
             ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
 
         }
+
+        //TODO fix design
+        //TODO asign default page
     }
 }

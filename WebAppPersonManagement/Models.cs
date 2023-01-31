@@ -25,9 +25,9 @@ namespace WebAppPersonManagement
 
     }
 
-    public class PersonType
+    public class PersonType_GetModel
     {
-        public int Type { get; set; }
+        public int PersonTypeID { get; set; }
         public string Description { get; set; }
 
 

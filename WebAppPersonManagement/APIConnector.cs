@@ -86,27 +86,27 @@ namespace WebAppPersonManagement
             }
         }
 
-        public async Task<IEnumerable<PersonType>> GetAllPersonTypesAsync()
+        public async Task<IEnumerable<PersonType_GetModel>> GetAllPersonTypesAsync()
         {
             string requestURL = $"{_baseURL}PersonType";
             using(HttpResponseMessage response = await _httpClient.GetAsync(requestURL))
             {
                 response.EnsureSuccessStatusCode();
                 string json = await response.Content.ReadAsStringAsync();
-                var personType = JsonConvert.DeserializeObject<IEnumerable<PersonType>>(json);
-                return personType != null ? personType : new List<PersonType>();
+                var personType = JsonConvert.DeserializeObject<IEnumerable<PersonType_GetModel>>(json);
+                return personType != null ? personType : new List<PersonType_GetModel>();
             }
         }
 
-        public async Task<PersonType> GetAllPersonTypesAsync(int id)
+        public async Task<PersonType_GetModel> GetAllPersonTypesAsync(int id)
         {
             string requestURL = $"{_baseURL}PersonType/{id}";
             using (HttpResponseMessage response = await _httpClient.GetAsync(requestURL))
             {
                 response.EnsureSuccessStatusCode();
                 string json = await response.Content.ReadAsStringAsync();
-                var personType = JsonConvert.DeserializeObject<PersonType>(json);
-                return personType != null ? personType : new PersonType();
+                var personType = JsonConvert.DeserializeObject<PersonType_GetModel>(json);
+                return personType != null ? personType : new PersonType_GetModel();
             }
         }
 

@@ -27,14 +27,14 @@
         </script>
     </telerik:RadCodeBlock>
 </head>
-<body style="padding-top:0px;">
+<body style="padding-top: 0px;">
     <form id="form1" runat="server">
         <nav class="navbar navbar-light bg-dark">
             <div class="container-fluid">
                 <span class="navbar-brand mb-0 text-light h1">Person Management</span>
             </div>
         </nav>
-        <telerik:RadScriptManager runat="server" ID="RadScriptManager1" >
+        <telerik:RadScriptManager runat="server" ID="RadScriptManager1">
             <Scripts>
                 <asp:ScriptReference Name="MsAjaxBundle" />
                 <asp:ScriptReference Name="jquery" />
@@ -72,18 +72,30 @@
                 OnInsertCommand="RadGrid1_InsertCommand" OnItemDataBound="RadGrid1_ItemDataBound"
                 OnPreRender="RadGrid1_PreRender" OnItemCommand="RadGrid1_ItemCommand">
                 <SortingSettings ShowNoSortIcons="true" />
-                <MasterTableView DataKeyNames="ID" CommandItemDisplay="Top" InsertItemPageIndexAction="ShowItemOnCurrentPage">
+                <MasterTableView DataKeyNames="ID" CommandItemDisplay="Top" InsertItemPageIndexAction="ShowItemOnCurrentPage" EditMode="InPlace">
                     <Columns>
                         <telerik:GridBoundColumn DataField="ID" HeaderText="ID" ReadOnly="true"
                             ForceExtractValue="Always" ConvertEmptyStringToNull="true" />
                         <telerik:GridBoundColumn DataField="Name" HeaderText="Name" />
                         <telerik:GridBoundColumn DataField="Age" HeaderText="Age" />
-                        <telerik:GridBoundColumn DataField="PersonTypeID" HeaderText="Type" Display="false" />
-                        <telerik:GridBoundColumn DataField="PersonTypeDescription" HeaderText="Type" ReadOnly="true" />
-                        <telerik:GridButtonColumn ButtonType="FontIconButton" CommandName="Edit" ItemStyle-Width="10px" />
+                        <telerik:GridTemplateColumn HeaderText="Type" ItemStyle-Width="240px">
+                            <ItemTemplate>
+                                <%#DataBinder.Eval(Container.DataItem, "PersonTypeID")%>
+                            </ItemTemplate>
+                            <EditItemTemplate>
+                                <telerik:RadDropDownList RenderMode="Lightweight" runat="server" ID="RadDropDownList1" 
+                                    DataTextField="PersonTypeID" DataValueField="Description">
+                                </telerik:RadDropDownList>
+                            </EditItemTemplate>
+                        </telerik:GridTemplateColumn>
+                        <%--<telerik:GridBoundColumn DataField="PersonTypeID" HeaderText="Type" Display="false" />--%>
+                        <%--<telerik:GridBoundColumn DataField="PersonTypeDescription" HeaderText="Type" ReadOnly="true" />--%>
+                        <telerik:GridEditCommandColumn UniqueName="EditCommandColumn" HeaderStyle-Width="100px"/>
+                        <%--<telerik:GridButtonColumn ButtonType="FontIconButton" CommandName="Edit" ItemStyle-Width="10px" />--%>
                         <telerik:GridButtonColumn ConfirmText="Delete this product?" ConfirmDialogType="RadWindow"
-                            ConfirmTitle="Delete" ButtonType="FontIconButton" CommandName="Delete" ItemStyle-Width="10px" />
-                        <telerik:GridButtonColumn ButtonType="ImageButton" Text="Open" UniqueName="GoToPage2" CommandName="GoToPage2" ImageUrl="Images/right_arrow.png" ItemStyle-Width="10px" />
+                            ConfirmTitle="Delete" ButtonType="FontIconButton" CommandName="Delete" HeaderStyle-Width="100px" />
+                        <telerik:GridButtonColumn ButtonType="ImageButton" Text="Open" UniqueName="GoToPage2" CommandName="GoToPage2" 
+                            ImageUrl="Images/right_arrow.png" HeaderStyle-Width="100px" />
 
                     </Columns>
                 </MasterTableView>
@@ -93,7 +105,7 @@
                 </ClientSettings>
             </telerik:RadGrid>
         </div>
-        <telerik:RadInputManager RenderMode="Lightweight" runat="server" ID="RadInputManager1" Enabled="true">
+       <%-- <telerik:RadInputManager RenderMode="Lightweight" runat="server" ID="RadInputManager1" Enabled="true">
             <telerik:TextBoxSetting BehaviorID="TextBoxSetting1">
             </telerik:TextBoxSetting>
             <telerik:NumericTextBoxSetting BehaviorID="NumericTextBoxSetting1" Type="Number"
@@ -102,7 +114,7 @@
             <telerik:NumericTextBoxSetting BehaviorID="NumericTextBoxSetting2" Type="Number"
                 AllowRounding="true" DecimalDigits="0">
             </telerik:NumericTextBoxSetting>
-        </telerik:RadInputManager>
+        </telerik:RadInputManager>--%>
         <telerik:RadWindowManager RenderMode="Lightweight" ID="RadWindowManager1" runat="server" />
     </form>
 

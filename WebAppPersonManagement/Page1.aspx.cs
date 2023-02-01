@@ -10,6 +10,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Telerik.Web.UI;
+using Telerik.Web.UI.ExportInfrastructure;
 
 namespace WebAppPersonManagement
 {
@@ -17,12 +18,20 @@ namespace WebAppPersonManagement
     {
 
         private APIConnector _api;
+        public IEnumerable<PersonType_GetModel> _personTypes;
 
         public Page1()
         {
             //string apiUrl = ConfigurationManager.AppSettings["api_url"];
             string apiUrl = Properties.Settings.Default.api_url;
             _api = new APIConnector(apiUrl);
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            _personTypes = AsyncContext.Run(() => _api.GetAllPersonTypesAsync());
+            //RadDropDownList1.DataSource = result;
+            //RadDropDownList1.DataBind();
         }
 
 
@@ -64,28 +73,28 @@ namespace WebAppPersonManagement
 
         private void SetupInputManager(GridEditableItem editableItem)
         {
-            var textBox =
-                ((GridTextBoxColumnEditor)editableItem.EditManager.GetColumnEditor("Name")).TextBoxControl;
+            //var textBox =
+            //    ((GridTextBoxColumnEditor)editableItem.EditManager.GetColumnEditor("Name")).TextBoxControl;
 
 
-            InputSetting inputSetting = RadInputManager1.GetSettingByBehaviorID("TextBoxSetting1");
-            inputSetting.TargetControls.Add(new TargetInput(textBox.UniqueID, true));
-            inputSetting.InitializeOnClient = true;
-            inputSetting.Validation.IsRequired = true;
+            //InputSetting inputSetting = RadInputManager1.GetSettingByBehaviorID("TextBoxSetting1");
+            //inputSetting.TargetControls.Add(new TargetInput(textBox.UniqueID, true));
+            //inputSetting.InitializeOnClient = true;
+            //inputSetting.Validation.IsRequired = true;
 
-            textBox =
-                ((GridTextBoxColumnEditor)editableItem.EditManager.GetColumnEditor("Age")).TextBoxControl;
+            //textBox =
+            //    ((GridTextBoxColumnEditor)editableItem.EditManager.GetColumnEditor("Age")).TextBoxControl;
 
-            inputSetting = RadInputManager1.GetSettingByBehaviorID("NumericTextBoxSetting1");
-            inputSetting.InitializeOnClient = true;
-            inputSetting.TargetControls.Add(new TargetInput(textBox.UniqueID, true));
+            //inputSetting = RadInputManager1.GetSettingByBehaviorID("NumericTextBoxSetting1");
+            //inputSetting.InitializeOnClient = true;
+            //inputSetting.TargetControls.Add(new TargetInput(textBox.UniqueID, true));
 
-            textBox =
-                ((GridTextBoxColumnEditor)editableItem.EditManager.GetColumnEditor("PersonTypeID")).TextBoxControl;
+            //textBox =
+            //    ((GridTextBoxColumnEditor)editableItem.EditManager.GetColumnEditor("PersonTypeID")).TextBoxControl;
 
-            inputSetting = RadInputManager1.GetSettingByBehaviorID("NumericTextBoxSetting2");
-            inputSetting.InitializeOnClient = true;
-            inputSetting.TargetControls.Add(new TargetInput(textBox.UniqueID, true));
+            //inputSetting = RadInputManager1.GetSettingByBehaviorID("NumericTextBoxSetting2");
+            //inputSetting.InitializeOnClient = true;
+            //inputSetting.TargetControls.Add(new TargetInput(textBox.UniqueID, true));
         }
 
         protected void RadGrid1_InsertCommand(object source, GridCommandEventArgs e)
@@ -105,6 +114,7 @@ namespace WebAppPersonManagement
             catch
             {
                 ShowErrorMessage();
+                return;
             }
             AsyncContext.Run(() => _api.CreatePersonAsync(p));
 
@@ -122,28 +132,36 @@ namespace WebAppPersonManagement
 
         protected void RadGrid1_ItemDataBound(object sender, GridItemEventArgs e)
         {
-            //if (e.Item is GridDataItem)
-            //{
-            //    GridDataItem item = (GridDataItem)e.Item;
-            //    int type = int.Parse(item["PersonTypeID"].Text);
-            //    if (type == 1) { }
-            //    else
-            //    {
-            //        item["GoToPage2"].Controls.Clear();
-            //    }
-            //}
+
         }
 
         protected void RadGrid1_PreRender(object sender, EventArgs e)
         {
             foreach (GridDataItem dataItem in RadGrid1.Items)
             {
-                int type = int.Parse(dataItem["PersonTypeID"].Text);
-                if (type == 1) { }
-                else
+                TableCell tc = dataItem["Type"];
+                var lbl = (RadLabel)tc.FindControl("RadLabel2");
+                if(lbl == null) { continue; }
+                var txt = lbl.Text;
+                if(int.TryParse(txt, out int type))
                 {
-                    dataItem["GoToPage2"].Controls.Clear();
+                    if(type == 1) { }
+                    else
+                    {
+                        dataItem["GoToPage2"].Controls.Clear();
+                    }
                 }
+
+                //Person_GetModel p = (Person_GetModel)dataItem.DataItem;
+
+                //if (p != null)
+                //{
+                //    if (p.PersonTypeID == 1) { }
+                //    else
+                //    {
+                //        dataItem["GoToPage2"].Controls.Clear();
+                //    }
+                //}
             }
         }
 
@@ -152,7 +170,7 @@ namespace WebAppPersonManagement
             switch (e.CommandName.ToUpper())
             {
                 case "GOTOPAGE2":
-                    if(e.Item is GridDataItem)
+                    if (e.Item is GridDataItem)
                     {
                         GridDataItem item = (GridDataItem)e.Item;
                         string id = item["ID"].Text;

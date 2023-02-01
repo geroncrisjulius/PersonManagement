@@ -25,8 +25,7 @@ namespace WebAPIPersonManagement.Controllers
             var pList = new List<Person_GetModel>();
             foreach (Person p in persons)
             {
-
-                pList.Add(CreatePersonGetModel(p));
+                pList.Add(new Person_GetModel(p));
             }
 
 
@@ -45,44 +44,45 @@ namespace WebAPIPersonManagement.Controllers
                 return NotFound();
             }
 
-            return Ok(CreatePersonGetModel(person));
+            return Ok(new Person_GetModel(person));
         }
 
-        private Person_GetModel CreatePersonGetModel(Person person)
-        {
-            Person_GetModel pModel = new Person_GetModel
-            {
-                ID = person.ID,
-                Name = person.Name,
-                Age = person.Age,
-                PersonTypeID = person.PersonTypeID,
-                PersonTypeDescription = person.PersonType == null ? "" : person.PersonType.Description
-            };
-            return pModel;
-        }
+        //private Person_GetModel CreatePersonGetModel(Person person)
+        //{
+        //    Person_GetModel pModel = new Person_GetModel
+        //    {
+        //        ID = person.ID,
+        //        Name = person.Name,
+        //        Age = person.Age,
+        //        PersonTypeID = person.PersonTypeID,
+        //        PersonTypeDescription = person.PersonType == null ? "" : person.PersonType.Description
+        //    };
+        //    return pModel;
+        //}
 
-        private Person CreatePersonFromModel(Person_WriteModel personModel)
-        {
-            Person p = new Person
-            {
-                ID = personModel.ID,
-                Name = personModel.Name,
-                Age = personModel.Age,
-                PersonTypeID = personModel.PersonTypeID
-            };
-            return p;
-        }
+        //private Person CreatePersonFromModel(Person_WriteModel personModel)
+        //{
+        //    Person p = new Person
+        //    {
+        //        ID = personModel.ID,
+        //        Name = personModel.Name,
+        //        Age = personModel.Age,
+        //        PersonTypeID = personModel.PersonTypeID
+        //    };
+        //    return p;
+        //}
 
         [HttpPost]
         public IActionResult CreatePerson(Person_WriteModel person)
         {
 
-            if (!_context.PersonTypes.Any(pt => pt.Type == person.PersonTypeID))
+            if (!_context.PersonTypes.Any(pt => pt.PersonTypeID == person.PersonTypeID))
             {
                 return BadRequest();
             }
 
-            Person p = CreatePersonFromModel(person);
+            //Person p = CreatePersonFromModel(person);
+            Person p = person.CreatePersonFromModel();
             _context.Persons.Add(p);
             _context.SaveChanges();
             return CreatedAtAction(nameof(CreatePerson), new { id = p.ID }, p);
@@ -102,7 +102,7 @@ namespace WebAPIPersonManagement.Controllers
                 return NotFound();
             }
 
-            if (!_context.PersonTypes.Any(pt => pt.Type == person.PersonTypeID))
+            if (!_context.PersonTypes.Any(pt => pt.PersonTypeID == person.PersonTypeID))
             {
                 return BadRequest();
             }

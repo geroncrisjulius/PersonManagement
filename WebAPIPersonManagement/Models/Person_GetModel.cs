@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using WebAPIPersonManagement.Database;
 
 namespace WebAPIPersonManagement.Models
 {
@@ -8,6 +9,16 @@ namespace WebAPIPersonManagement.Models
         public string Name { get; set; }
         public int Age { get; set; }
         public int PersonTypeID { get; set; }
-        public string  PersonTypeDescription { get; set; }
+        public string PersonTypeDescription { get; set; }
+
+
+        internal Person_GetModel(Person person)
+        {
+            ID = person.ID;
+            Name = person.Name;
+            Age = person.Age;
+            PersonTypeID = person.PersonTypeID;
+            PersonTypeDescription = person.PersonType == null ? "" : person.PersonType.Description;
+        }
     }
 }

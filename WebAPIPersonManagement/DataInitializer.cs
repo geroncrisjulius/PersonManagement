@@ -24,8 +24,8 @@ namespace WebAPIPersonManagement
 
             var personTypes = new[]
             {
-                new PersonType { Type = 1, Description = "Teacher" },
-                new PersonType { Type = 2, Description = "Student" }
+                new PersonType { PersonTypeID = 1, Description = "Teacher" },
+                new PersonType { PersonTypeID = 2, Description = "Student" }
             };
 
             _context.PersonTypes.AddRange(personTypes);

@@ -31,10 +31,10 @@ namespace WebAppPersonManagement
 
         public async Task<Person_GetModel> GetPersonAsync(int id)
         {
-            string requestURL = $"{_baseURL}Person/{id}";
+            string requestURL = $"{_baseURL}/Person/{id}";
             using (HttpResponseMessage response = await _httpClient.GetAsync(requestURL))
             {
-                response.EnsureSuccessStatusCode();
+                if (!response.IsSuccessStatusCode) { return null; }
                 string json = await response.Content.ReadAsStringAsync();
                 var person = JsonConvert.DeserializeObject<Person_GetModel>(json);
                 return person != null ? person : new Person_GetModel();
@@ -44,10 +44,10 @@ namespace WebAppPersonManagement
 
         public async Task<IEnumerable<Person_GetModel>> GetAllPersonsAsync()
         {
-            string requestURL = $"{_baseURL}Person";
+            string requestURL = $"{_baseURL}/Person";
             using (HttpResponseMessage response = await _httpClient.GetAsync(requestURL))
             {
-                response.EnsureSuccessStatusCode();
+                if (!response.IsSuccessStatusCode) { return null; }
                 string json = await response.Content.ReadAsStringAsync();
                 var persons = JsonConvert.DeserializeObject<IEnumerable<Person_GetModel>>(json);
                 return persons != null ? persons : new List<Person_GetModel>();
@@ -57,11 +57,11 @@ namespace WebAppPersonManagement
 
         public async void CreatePersonAsync(Person_WriteModel person)
         {
-            string requestURL = $"{_baseURL}Person";
+            string requestURL = $"{_baseURL}/Person";
 
             using (HttpResponseMessage response = await _httpClient.PostAsync(requestURL, GenerateStringContent(person)))
             {
-                response.EnsureSuccessStatusCode();
+
 
             }
         }
@@ -69,29 +69,28 @@ namespace WebAppPersonManagement
         public async void UpdatePersonAsync(int id, Person_WriteModel person)
         {
 
-            string requestURL = $"{_baseURL}Person/{id}";
+            string requestURL = $"{_baseURL}/Person/{id}";
             using (HttpResponseMessage response = await _httpClient.PutAsync(requestURL, GenerateStringContent(person)))
             {
-                response.EnsureSuccessStatusCode();
             }
         }
 
         public async void DeletePersonAsync(int id)
         {
 
-            string requestURL = $"{_baseURL}Person/{id}";
+            string requestURL = $"{_baseURL}/Person/{id}";
             using (HttpResponseMessage response = await _httpClient.DeleteAsync(requestURL))
             {
-                response.EnsureSuccessStatusCode();
             }
         }
 
         public async Task<IEnumerable<PersonType_GetModel>> GetAllPersonTypesAsync()
         {
-            string requestURL = $"{_baseURL}PersonType";
-            using(HttpResponseMessage response = await _httpClient.GetAsync(requestURL))
+            string requestURL = $"{_baseURL}/PersonType";
+            using (HttpResponseMessage response = await _httpClient.GetAsync(requestURL))
             {
-                response.EnsureSuccessStatusCode();
+
+                if (!response.IsSuccessStatusCode) { return null; }
                 string json = await response.Content.ReadAsStringAsync();
                 var personType = JsonConvert.DeserializeObject<IEnumerable<PersonType_GetModel>>(json);
                 return personType != null ? personType : new List<PersonType_GetModel>();
@@ -100,10 +99,11 @@ namespace WebAppPersonManagement
 
         public async Task<PersonType_GetModel> GetAllPersonTypesAsync(int id)
         {
-            string requestURL = $"{_baseURL}PersonType/{id}";
+            string requestURL = $"{_baseURL}/PersonType/{id}";
             using (HttpResponseMessage response = await _httpClient.GetAsync(requestURL))
             {
-                response.EnsureSuccessStatusCode();
+
+                if (!response.IsSuccessStatusCode) { return null; }
                 string json = await response.Content.ReadAsStringAsync();
                 var personType = JsonConvert.DeserializeObject<PersonType_GetModel>(json);
                 return personType != null ? personType : new PersonType_GetModel();

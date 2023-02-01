@@ -33,16 +33,17 @@ namespace WebAppPersonManagement
             {
 
                 var p = AsyncContext.Run(() => _api.GetPersonAsync(id));
-                
-                name = p.Name;
-                age = p.Age.ToString();
-                persontype = p.PersonTypeDescription;
-                
+                if (p != null)
+                {
+                    name = p.Name;
+                    age = p.Age.ToString();
+                    persontype = p.PersonTypeDescription;
 
+                }
 
             }
         }
-        
+
 
     }
 

@@ -22,7 +22,6 @@ namespace WebAppPersonManagement
 
         public Page1()
         {
-            //string apiUrl = ConfigurationManager.AppSettings["api_url"];
             string apiUrl = Properties.Settings.Default.api_url;
             _api = new APIConnector(apiUrl);
         }
@@ -30,8 +29,6 @@ namespace WebAppPersonManagement
         protected void Page_Load(object sender, EventArgs e)
         {
             _personTypes = AsyncContext.Run(() => _api.GetAllPersonTypesAsync());
-            //RadDropDownList1.DataSource = result;
-            //RadDropDownList1.DataBind();
         }
 
 
@@ -50,51 +47,28 @@ namespace WebAppPersonManagement
             var id = (int)editableItem.GetDataKeyValue("ID");
 
             Person_WriteModel p = new Person_WriteModel();
-            editableItem.UpdateValues(p);
+            try
+            {
+                editableItem.UpdateValues(p);
+            }
+            catch
+            {
+                ShowInvalidDataMessage();
+                return;
+            }
             AsyncContext.Run(() => _api.UpdatePersonAsync(id, p));
-
 
         }
 
 
-        private void ShowErrorMessage()
+        private void ShowInvalidDataMessage()
         {
             RadAjaxManager1.ResponseScripts.Add(string.Format("window.radalert(\"Please enter valid data!\")"));
         }
 
         protected void RadGrid1_ItemCreated(object sender, GridItemEventArgs e)
         {
-            if (e.Item is GridEditableItem && (e.Item.IsInEditMode))
-            {
-                GridEditableItem editableItem = (GridEditableItem)e.Item;
-                SetupInputManager(editableItem);
-            }
-        }
 
-        private void SetupInputManager(GridEditableItem editableItem)
-        {
-            //var textBox =
-            //    ((GridTextBoxColumnEditor)editableItem.EditManager.GetColumnEditor("Name")).TextBoxControl;
-
-
-            //InputSetting inputSetting = RadInputManager1.GetSettingByBehaviorID("TextBoxSetting1");
-            //inputSetting.TargetControls.Add(new TargetInput(textBox.UniqueID, true));
-            //inputSetting.InitializeOnClient = true;
-            //inputSetting.Validation.IsRequired = true;
-
-            //textBox =
-            //    ((GridTextBoxColumnEditor)editableItem.EditManager.GetColumnEditor("Age")).TextBoxControl;
-
-            //inputSetting = RadInputManager1.GetSettingByBehaviorID("NumericTextBoxSetting1");
-            //inputSetting.InitializeOnClient = true;
-            //inputSetting.TargetControls.Add(new TargetInput(textBox.UniqueID, true));
-
-            //textBox =
-            //    ((GridTextBoxColumnEditor)editableItem.EditManager.GetColumnEditor("PersonTypeID")).TextBoxControl;
-
-            //inputSetting = RadInputManager1.GetSettingByBehaviorID("NumericTextBoxSetting2");
-            //inputSetting.InitializeOnClient = true;
-            //inputSetting.TargetControls.Add(new TargetInput(textBox.UniqueID, true));
         }
 
         protected void RadGrid1_InsertCommand(object source, GridCommandEventArgs e)
@@ -113,7 +87,7 @@ namespace WebAppPersonManagement
             }
             catch
             {
-                ShowErrorMessage();
+                ShowInvalidDataMessage();
                 return;
             }
             AsyncContext.Run(() => _api.CreatePersonAsync(p));
@@ -141,27 +115,17 @@ namespace WebAppPersonManagement
             {
                 TableCell tc = dataItem["Type"];
                 var lbl = (RadLabel)tc.FindControl("RadLabel2");
-                if(lbl == null) { continue; }
+                if (lbl == null) { continue; }
                 var txt = lbl.Text;
-                if(int.TryParse(txt, out int type))
+                if (int.TryParse(txt, out int type))
                 {
-                    if(type == 1) { }
+                    if (type == 1) { }
                     else
                     {
                         dataItem["GoToPage2"].Controls.Clear();
                     }
                 }
 
-                //Person_GetModel p = (Person_GetModel)dataItem.DataItem;
-
-                //if (p != null)
-                //{
-                //    if (p.PersonTypeID == 1) { }
-                //    else
-                //    {
-                //        dataItem["GoToPage2"].Controls.Clear();
-                //    }
-                //}
             }
         }
 

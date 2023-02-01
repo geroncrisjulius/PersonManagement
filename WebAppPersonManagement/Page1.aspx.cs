@@ -10,6 +10,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Telerik.Web.UI;
+using Telerik.Web.UI.ExportInfrastructure;
 
 namespace WebAppPersonManagement
 {
@@ -17,6 +18,7 @@ namespace WebAppPersonManagement
     {
 
         private APIConnector _api;
+        public IEnumerable<PersonType_GetModel> _personTypes;
 
         public Page1()
         {
@@ -25,9 +27,9 @@ namespace WebAppPersonManagement
             _api = new APIConnector(apiUrl);
         }
 
-        protected void Page1_Load(object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
-            var result = AsyncContext.Run(() => _api.GetAllPersonTypesAsync());
+            _personTypes = AsyncContext.Run(() => _api.GetAllPersonTypesAsync());
             //RadDropDownList1.DataSource = result;
             //RadDropDownList1.DataBind();
         }
@@ -112,6 +114,7 @@ namespace WebAppPersonManagement
             catch
             {
                 ShowErrorMessage();
+                return;
             }
             AsyncContext.Run(() => _api.CreatePersonAsync(p));
 
@@ -129,29 +132,37 @@ namespace WebAppPersonManagement
 
         protected void RadGrid1_ItemDataBound(object sender, GridItemEventArgs e)
         {
-            //if (e.Item is GridDataItem)
-            //{
-            //    GridDataItem item = (GridDataItem)e.Item;
-            //    int type = int.Parse(item["PersonTypeID"].Text);
-            //    if (type == 1) { }
-            //    else
-            //    {
-            //        item["GoToPage2"].Controls.Clear();
-            //    }
-            //}
+
         }
 
         protected void RadGrid1_PreRender(object sender, EventArgs e)
         {
-            //foreach (GridDataItem dataItem in RadGrid1.Items)
-            //{
-            //    int type = int.Parse(dataItem["PersonTypeID"].Text);
-            //    if (type == 1) { }
-            //    else
-            //    {
-            //        dataItem["GoToPage2"].Controls.Clear();
-            //    }
-            //}
+            foreach (GridDataItem dataItem in RadGrid1.Items)
+            {
+                TableCell tc = dataItem["Type"];
+                var lbl = (RadLabel)tc.FindControl("RadLabel2");
+                if(lbl == null) { continue; }
+                var txt = lbl.Text;
+                if(int.TryParse(txt, out int type))
+                {
+                    if(type == 1) { }
+                    else
+                    {
+                        dataItem["GoToPage2"].Controls.Clear();
+                    }
+                }
+
+                //Person_GetModel p = (Person_GetModel)dataItem.DataItem;
+
+                //if (p != null)
+                //{
+                //    if (p.PersonTypeID == 1) { }
+                //    else
+                //    {
+                //        dataItem["GoToPage2"].Controls.Clear();
+                //    }
+                //}
+            }
         }
 
         protected void RadGrid1_ItemCommand(object sender, GridCommandEventArgs e)
@@ -159,7 +170,7 @@ namespace WebAppPersonManagement
             switch (e.CommandName.ToUpper())
             {
                 case "GOTOPAGE2":
-                    if(e.Item is GridDataItem)
+                    if (e.Item is GridDataItem)
                     {
                         GridDataItem item = (GridDataItem)e.Item;
                         string id = item["ID"].Text;
